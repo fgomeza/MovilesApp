@@ -35,8 +35,6 @@ captures/
 # Android studio
 *.iml
 .idea/
-.idea/workspace.xml
-.idea/libraries/
 
 # =========================
 # Operating System Files
