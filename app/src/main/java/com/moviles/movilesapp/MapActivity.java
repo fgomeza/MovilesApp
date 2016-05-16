@@ -1,4 +1,4 @@
-package com.example.francisco.movilesapp;
+package com.moviles.movilesapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

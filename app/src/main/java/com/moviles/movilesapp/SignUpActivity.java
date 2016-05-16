@@ -1,4 +1,4 @@
-package com.example.francisco.movilesapp;
+package com.moviles.movilesapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

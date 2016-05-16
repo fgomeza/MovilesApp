@@ -1,4 +1,4 @@
-package com.example.francisco.movilesapp;
+package com.moviles.movilesapp;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

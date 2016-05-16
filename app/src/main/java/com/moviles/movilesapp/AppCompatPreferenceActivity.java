@@ -1,4 +1,4 @@
-package com.example.francisco.movilesapp;
+package com.moviles.movilesapp;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
