@@ -73,7 +73,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intento);
 
         } else if (id == R.id.opt_2) {
-            Intent intento = new Intent(getApplicationContext(), SearchActivity.class);
+            Intent intento = new Intent(getApplicationContext(), MapActivity.class);
             startActivity(intento);
 
         } else if (id == R.id.opt_3) {
