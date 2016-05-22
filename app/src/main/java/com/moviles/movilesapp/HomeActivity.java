@@ -69,16 +69,16 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.opt_1) {
-            Intent intento = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(intento);
+            Intent in = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(in);
 
         } else if (id == R.id.opt_2) {
-            Intent intento = new Intent(getApplicationContext(), MapActivity.class);
-            startActivity(intento);
+            Intent in = new Intent(getApplicationContext(), MapActivity.class);
+            startActivity(in);
 
         } else if (id == R.id.opt_3) {
-           // Intent intento = new Intent(getApplicationContext(), ReportActivity.class);
-            //startActivity(intento);
+           Intent in = new Intent(getApplicationContext(), Reports.class);
+            startActivity(in);
 
         } else if (id == R.id.opt_4) {
 
