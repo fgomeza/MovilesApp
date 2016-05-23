@@ -59,11 +59,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     protected void setupAuth() {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            finish();
-        } else {
-            Toast.makeText(getBaseContext(), user.getUid(), Toast.LENGTH_SHORT).show();
-        }
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

@@ -28,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private static final String TAG = "LoginActivity";
 
@@ -112,20 +112,21 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                login();
-            }
-        });
+        mEmailSignInButton.setOnClickListener(this);
+        mRegisterButton.setOnClickListener(this);
+    }
 
-        mRegisterButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.sign_in_button:
+                login();
+                break;
+            case R.id.sign_up_button:
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
-            }
-        });
+                break;
+        }
     }
 
     private boolean validateForm() {
