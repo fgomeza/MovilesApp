@@ -15,10 +15,10 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/registerUsername"
+            android:id="@+id/email_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_registerUsername"
+            android:hint="@string/prompt_registerEmail"
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/registerPassword"
+            android:id="@+id/password_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_registerPassword"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/registerConfirmPassword"
+            android:id="@+id/confirm_password_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_registerConfirmPassword"
@@ -68,14 +68,14 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/registerFirstName"
+            android:id="@+id/first_name_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_registerName"
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -86,14 +86,14 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/registerLastName"
+            android:id="@+id/last_name_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_registerFirstName"
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -104,14 +104,14 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/registerBirth"
+            android:id="@+id/birth_date_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_registerBirth"
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
+            android:inputType="date"
             android:maxLines="1"
             android:singleLine="true" />
 
