@@ -15,6 +15,42 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/first_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_registerName"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in"
+            android:imeOptions="actionUnspecified"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/last_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_registerFirstName"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in"
+            android:imeOptions="actionUnspecified"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
             android:id="@+id/email_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,60 +94,6 @@
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
-            android:maxLines="1"
-            android:singleLine="true" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/first_name_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_registerName"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in"
-            android:imeOptions="actionUnspecified"
-            android:inputType="text"
-            android:maxLines="1"
-            android:singleLine="true" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/last_name_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_registerFirstName"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in"
-            android:imeOptions="actionUnspecified"
-            android:inputType="text"
-            android:maxLines="1"
-            android:singleLine="true" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/birth_date_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_registerBirth"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in"
-            android:imeOptions="actionUnspecified"
-            android:inputType="date"
             android:maxLines="1"
             android:singleLine="true" />
 

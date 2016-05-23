@@ -26,7 +26,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     EditText confirmPasswordField;
     EditText firstNameField;
     EditText lastNameField;
-    EditText birthDateField;
     Button cancelSignupButton;
     Button createUserButton;
 
@@ -87,7 +86,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         confirmPasswordField = (EditText) findViewById(R.id.confirm_password_field);
         firstNameField = (EditText) findViewById(R.id.first_name_field);
         lastNameField = (EditText) findViewById(R.id.last_name_field);
-        birthDateField = (EditText) findViewById(R.id.birth_date_field);
     }
 
     private void bindElements() {
@@ -140,7 +138,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         User user = new User();
         user.setFirstName(firstNameField.getText().toString());
         user.setLastName(lastNameField.getText().toString());
-        user.setBirthDate(birthDateField.getText().toString());
 
         return user;
     }
@@ -148,7 +145,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private boolean validateForm() {
         boolean valid = true;
 
-        EditText[] requiredFields = { emailField, passwordField, confirmPasswordField, firstNameField, lastNameField, birthDateField };
+        EditText[] requiredFields = { emailField, passwordField, confirmPasswordField, firstNameField, lastNameField };
         for (EditText requiredField : requiredFields) {
             valid = validateRequiredField(requiredField);
         }

@@ -10,7 +10,6 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private String birthDate;
 
     public User () {
     }
@@ -29,14 +28,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
     }
 
     public void saveUser(final String uid) {
