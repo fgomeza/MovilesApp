@@ -15,3 +15,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Add this global rule
+-keepattributes Signature
+
+# This rule will properly ProGuard all the model classes in
+# the package com.moviles.movilesapp.models.
+-keepclassmembers class com.moviles.movilesapp.models.** {
+  *;
+}
