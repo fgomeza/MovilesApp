@@ -89,4 +89,6 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_map">Map</string>
     <string name="title_activity_reports">Reports</string>
+    <string name="action_post">Enviar reporte</string>
+    <string name="action_random_post">Enviar reporte aleatorio</string>
 </resources>
