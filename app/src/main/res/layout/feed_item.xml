@@ -1,48 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/feed_bg"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:padding="@dimen/feed_item_padding" >
 
+    <!--panel-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/bg_parent_rounded_corner" >
 
-        android:layout_marginLeft="@dimen/feed_item_margin"
-        android:layout_marginRight="@dimen/feed_item_margin"
-        android:layout_marginTop="@dimen/feed_item_margin"
-        android:background="@drawable/bg_parent_rounded_corner"
-        android:paddingBottom="@dimen/feed_item_padding_top_bottom"
-        android:paddingTop="@dimen/feed_item_padding_top_bottom">
-
+        <!--content-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/feed_item_padding_left_right"
-            android:paddingRight="@dimen/feed_item_padding_left_right">
+            android:orientation="vertical"
+            android:padding="@dimen/feed_item_content_padding" >
 
-            <TextView
-                android:id="@+id/name"
+            <!--panel-header-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/feed_item_profile_name"
-                android:textStyle="bold" />
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/feed_item_profile_name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/timestamp"
+                    android:textSize="@dimen/feed_item_timestamp"
+                    />
+
+            </LinearLayout>
+
+            <!--panel-body-->
+            <TextView
+                android:id="@+id/msgTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/feed_item_status_margin_top_bottom"
+                android:layout_marginTop="@dimen/feed_item_status_margin_top_bottom"/>
+
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/msgTxt"
+        <ImageView
+            android:id="@+id/feedImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="@dimen/feed_item_status_pad_top_bottom"
-            android:paddingBottom="@dimen/feed_item_status_pad_top_bottom"
-            android:paddingLeft="@dimen/feed_item_status_pad_left_right"
-            android:paddingRight="@dimen/feed_item_status_pad_left_right" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
-
 
 </LinearLayout>

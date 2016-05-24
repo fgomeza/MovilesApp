@@ -22,16 +22,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.moviles.movilesapp.models.FeedItem;
-
-import org.json.JSONObject;
+import com.moviles.movilesapp.models.FeedListAdapter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,40 +61,10 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void setupFeed() {
+        FeedListAdapter adapter = new FeedListAdapter(this);
         listView = (ListView) findViewById(R.id.feedList);
-        feedItems = new ArrayList<>();
-        listAdapter = new FeedListAdapter(this, feedItems);
-        listView.setAdapter(listAdapter);
+        listView.setAdapter(adapter);
 
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = db.getReference().child("feed");
-        mRef.addChildEventListener(new dbListener());
-    }
-
-    class dbListener implements ChildEventListener {
-
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            FeedItem item = dataSnapshot.getValue(FeedItem.class);
-            feedItems.add(item);
-            listAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            String msg = databaseError.getMessage();
-            Log.e(TAG, msg);
-            Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
     }
 
     private void setupAuth() {

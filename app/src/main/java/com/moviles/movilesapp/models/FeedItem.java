@@ -7,16 +7,18 @@ public class FeedItem {
 
     private String name;
     private String msgTxt;
+    private String timestamp;
 
     public FeedItem() {}
 
-    public FeedItem(String name, String msgTxt) {
-        this.name = name;
-        this.msgTxt = msgTxt;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public FeedItem(String name, String msgTxt, String timestamp) {
+        this.name = name;
+        this.msgTxt = msgTxt;
+        this.timestamp = timestamp;
     }
 
     public void setName(String name) {
@@ -29,5 +31,13 @@ public class FeedItem {
 
     public void setMsgTxt(String msgTxt) {
         this.msgTxt = msgTxt;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

@@ -14,7 +14,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Pet Tracker"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".PetTracker">
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">

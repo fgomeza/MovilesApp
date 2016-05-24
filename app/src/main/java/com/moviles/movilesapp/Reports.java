@@ -142,7 +142,8 @@ public class Reports extends AppCompatActivity
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         User user = dataSnapshot.getValue(User.class);
                         String name = user.getFirstName() + " " + user.getLastName();
-                        FeedItem item = new FeedItem(name, msgTxt);
+                        String timeStamp = String.valueOf(System.currentTimeMillis());
+                        FeedItem item = new FeedItem(name, msgTxt, timeStamp);
                         dbRef.child("feed").push().setValue(item);
                         Toast.makeText(getBaseContext(), "Report created successfully", Toast.LENGTH_SHORT).show();
                     }
