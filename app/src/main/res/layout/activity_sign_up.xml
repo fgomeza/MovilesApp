@@ -22,7 +22,7 @@
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
-            android:inputType="text"
+            android:inputType="textPersonName|textCapWords"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -40,7 +40,7 @@
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
-            android:inputType="text"
+            android:inputType="textPersonName|textCapWords"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -58,6 +58,7 @@
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionUnspecified"
+            android:inputType="textEmailAddress"
             android:maxLines="1"
             android:singleLine="true" />
 

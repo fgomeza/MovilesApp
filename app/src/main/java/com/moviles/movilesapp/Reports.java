@@ -14,10 +14,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.moviles.movilesapp.models.FeedItem;
+import com.moviles.movilesapp.models.User;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 public class Reports extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,7 +45,9 @@ public class Reports extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setupAuth();
+        bindButton();
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +56,7 @@ public class Reports extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
+        */
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -51,6 +65,7 @@ public class Reports extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -77,14 +92,34 @@ public class Reports extends AppCompatActivity
         }
     }
 
-    protected void setupAuth() {
+    private void sendRandomReport() {
+        String randomMessage = new BigInteger(130, new SecureRandom()).toString(32);
+        sendReport(randomMessage);
+        Toast.makeText(getBaseContext(), "Random report sent", Toast.LENGTH_SHORT).show();
+    }
+
+    private void bindButton() {
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.postReportBtn:
+                        EditText msgTxtField = (EditText) findViewById(R.id.msgTxtField);
+                        String msgTxt = msgTxtField.getText().toString();
+                        sendReport(msgTxt);
+                        break;
+                    case R.id.randomReportBtn:
+                        sendRandomReport();
+                        break;
+                }
+            }
+        };
+        findViewById(R.id.postReportBtn).setOnClickListener(listener);
+        findViewById(R.id.randomReportBtn).setOnClickListener(listener);
+    }
+
+    private void setupAuth() {
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            finish();
-        } else {
-            Toast.makeText(getBaseContext(), user.getUid(), Toast.LENGTH_SHORT).show();
-        }
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -96,6 +131,27 @@ public class Reports extends AppCompatActivity
                 }
             }
         };
+    }
+
+    private void sendReport(final String msgTxt) {
+        String uid = mAuth.getCurrentUser().getUid();
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.child("users").child(uid).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        String name = user.getFirstName() + " " + user.getLastName();
+                        FeedItem item = new FeedItem(name, msgTxt);
+                        dbRef.child("feed").push().setValue(item);
+                        Toast.makeText(getBaseContext(), "Report created successfully", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                }
+        );
     }
 
     @Override
