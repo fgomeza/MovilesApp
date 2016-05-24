@@ -4,5 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/map"
-    tools:context="com.example.francisco.movilesapp.MapActivity"
+    tools:context="com.moviles.movilesapp.MapActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment"/>
