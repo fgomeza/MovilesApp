@@ -4,38 +4,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.moviles.movilesapp.models.FeedItem;
-import com.moviles.movilesapp.models.FeedListAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.moviles.movilesapp.models.OnFragmentInteractionListener;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnFragmentInteractionListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-
-    private ListView listView;
-    private FeedListAdapter listAdapter;
-    private List<FeedItem> feedItems;
 
     protected FirebaseAuth mAuth;
     protected FirebaseAuth.AuthStateListener mAuthListener;
@@ -48,7 +35,6 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setupAuth();
-        setupFeed();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,13 +44,8 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
 
-    private void setupFeed() {
-        FeedListAdapter adapter = new FeedListAdapter(this);
-        listView = (ListView) findViewById(R.id.feedList);
-        listView.setAdapter(adapter);
-
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
     private void setupAuth() {
@@ -118,6 +99,8 @@ public class HomeActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
+        Toast.makeText(getBaseContext(), "Item clicked: " + id, Toast.LENGTH_SHORT).show();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -132,24 +115,42 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.opt_1) {
-            Intent in = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(in);
-
-        } else if (id == R.id.opt_2) {
+        if (id == R.id.drawer_feed) {
+            changeFragment(FeedFragment.class);
+            item.setChecked(true);
+        } else if (id == R.id.drawer_map) {
             Intent in = new Intent(getApplicationContext(), MapActivity.class);
             startActivity(in);
-
-        } else if (id == R.id.opt_3) {
-           Intent in = new Intent(getApplicationContext(), Reports.class);
-            startActivity(in);
-
-        } else if (id == R.id.opt_4) {
+        } else if (id == R.id.drawer_report) {
+            changeFragment(ReportsFragment.class);
+            item.setChecked(true);
+        } else if (id == R.id.drawer_signout) {
             mAuth.signOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        setTitle(item.getTitle());
         return true;
+    }
+
+    private void changeFragment(Class<? extends Fragment> fragmentClass) {
+        try {
+            Fragment fragment = fragmentClass.newInstance();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction() {
+        onBackPressed();
     }
 }

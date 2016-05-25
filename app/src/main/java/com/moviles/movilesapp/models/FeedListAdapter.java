@@ -28,7 +28,7 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
      * @param activity    The activity containing the ListView
      */
     public FeedListAdapter(Activity activity) {
-        super(FirebaseDatabase.getInstance().getReference().child("feed"),
+        super(FirebaseDatabase.getInstance().getReference().child(Constants.DB_FEED_NODE),
                 FeedItem.class,
                 R.layout.feed_item,
                 activity);
