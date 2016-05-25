@@ -3,15 +3,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/opt_1"
+            android:id="@+id/drawer_feed"
             android:icon="@drawable/ic_home_24dp"
             android:title="Noticias" />
         <item
-            android:id="@+id/opt_2"
+            android:id="@+id/drawer_map"
             android:icon="@drawable/ic_search"
             android:title="Búsqueda" />
         <item
-            android:id="@+id/opt_3"
+            android:id="@+id/drawer_report"
             android:icon="@drawable/ic_alert"
             android:title="Reportes" />
 
@@ -20,7 +20,7 @@
     <item android:title="">
         <menu>
             <item
-                android:id="@+id/opt_4"
+                android:id="@+id/drawer_signout"
                 android:title="Cerrar Sesión" />
 
         </menu>

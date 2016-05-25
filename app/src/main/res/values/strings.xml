@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovilesApp</string>
+    <string name="app_name">Pet Tracker</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -91,4 +91,8 @@
     <string name="title_activity_reports">Reports</string>
     <string name="action_post">Enviar reporte</string>
     <string name="action_random_post">Enviar reporte aleatorio</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment2">Reports</string>
 </resources>

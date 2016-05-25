@@ -6,11 +6,9 @@
     tools:context="com.moviles.movilesapp.HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
-    <ListView
-        android:id="@+id/feedList"
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/feed_bg"
-        android:divider="@null"></ListView>
+        android:layout_height="match_parent"></FrameLayout>
 
 </LinearLayout>

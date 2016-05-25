@@ -32,7 +32,7 @@ public class User {
 
     public void saveUser(final String uid) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child("users").child(uid);
+        DatabaseReference ref = database.getReference().child(Constants.DB_USERS_NODE).child(uid);
         ref.setValue(this);
     }
 }

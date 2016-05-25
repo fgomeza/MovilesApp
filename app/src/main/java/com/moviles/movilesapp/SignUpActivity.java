@@ -57,7 +57,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
     protected void setupAuth() {
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -66,12 +65,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                    //Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-
                     setupUser().saveUser(user.getUid());
                     String msg = "Your account has been created";
-                    Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-                    mAuth.signOut();
+                    Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
