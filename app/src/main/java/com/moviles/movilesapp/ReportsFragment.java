@@ -1,16 +1,16 @@
 package com.moviles.movilesapp;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,9 +19,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.moviles.movilesapp.models.CameraView;
 import com.moviles.movilesapp.models.Constants;
 import com.moviles.movilesapp.models.FeedItem;
-import com.moviles.movilesapp.models.OnFragmentInteractionListener;
 import com.moviles.movilesapp.models.User;
 
 import java.math.BigInteger;
@@ -84,14 +84,32 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
             case R.id.randomReportBtn:
                 sendRandomReport();
                 break;
+            case R.id.CamaraBtn:
+            OpenCamera();
+                break;
         }    }
 
     private void bindButton() {
         final Activity activity = getActivity();
         activity.findViewById(R.id.postReportBtn).setOnClickListener(this);
         activity.findViewById(R.id.randomReportBtn).setOnClickListener(this);
+        activity.findViewById(R.id.CamaraBtn).setOnClickListener(this);
+    }
+    private Camera mCamera = null;
+    private CameraView mCameraView = null;
+private void OpenCamera(){
+    try{
+        mCamera = Camera.open();//you can use open(int) to use different camera
+    } catch (Exception e){
+        Log.d("ERROR", "Failed to get camera: " + e.getMessage());
     }
 
+    if(mCamera != null) {
+        mCameraView = new CameraView(this, mCamera);//create a SurfaceView to show camera data
+        FrameLayout camera_view = (FrameLayout)getActivity().findViewById(R.id.camera_view);
+        camera_view.addView(mCameraView);//add the SurfaceView to the layout
+    }
+}
     private void sendReport(final String msgTxt) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
