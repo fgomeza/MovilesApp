@@ -45,9 +45,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".MapActivity"
-            android:label="@string/title_activity_map"></activity>
     </application>
 
 </manifest>

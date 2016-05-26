@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,6 +25,8 @@ public class HomeActivity extends AppCompatActivity
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
+    DrawerLayout drawer;
+
     protected FirebaseAuth mAuth;
     protected FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -36,7 +39,7 @@ public class HomeActivity extends AppCompatActivity
 
         setupAuth();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -115,42 +118,45 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.drawer_feed) {
-            changeFragment(FeedFragment.class);
-            item.setChecked(true);
-        } else if (id == R.id.drawer_map) {
-            Intent in = new Intent(getApplicationContext(), MapActivity.class);
-            startActivity(in);
-        } else if (id == R.id.drawer_report) {
-            changeFragment(ReportsFragment.class);
-            item.setChecked(true);
-        } else if (id == R.id.drawer_signout) {
+        if (id == R.id.drawer_signout) {
             mAuth.signOut();
+            return true;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Class<? extends Fragment> fragmentClass;
+
+        switch (id) {
+            case R.id.drawer_map:
+                fragmentClass = MapsFragment.class;
+                break;
+            case R.id.drawer_report:
+                fragmentClass = ReportsFragment.class;
+                break;
+            case R.id.drawer_feed:
+            default:
+                fragmentClass = FeedFragment.class;
+        }
+
         drawer.closeDrawer(GravityCompat.START);
+
+        Fragment fragment = null;
+        try {
+            fragment = fragmentClass.newInstance();
+        } catch (Exception e) {
+            Log.wtf(TAG, e.getMessage(), e);
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
+
+        item.setChecked(true);
         setTitle(item.getTitle());
         return true;
     }
 
-    private void changeFragment(Class<? extends Fragment> fragmentClass) {
-        try {
-            Fragment fragment = fragmentClass.newInstance();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_frame, fragment)
-                    .commit();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onFragmentInteraction() {
-        onBackPressed();
     }
 }
