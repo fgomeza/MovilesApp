@@ -1,18 +1,16 @@
 package com.moviles.movilesapp;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.moviles.movilesapp.models.FeedListAdapter;
-import com.moviles.movilesapp.models.OnFragmentInteractionListener;
 
 
 /**
@@ -63,6 +61,7 @@ public class FeedFragment extends BaseFragment {
     private void setupFeed(Activity activity) {
         FeedListAdapter adapter = new FeedListAdapter(activity);
         ListView listView = (ListView) activity.findViewById(R.id.feedList);
+        ImageView targetImageView = (ImageView) activity.findViewById(R.id.image);
         listView.setAdapter(adapter);
     }
 

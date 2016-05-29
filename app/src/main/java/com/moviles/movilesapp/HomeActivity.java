@@ -1,6 +1,5 @@
 package com.moviles.movilesapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -159,4 +158,5 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction() {
     }
+
 }

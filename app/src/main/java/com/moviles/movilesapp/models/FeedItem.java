@@ -8,17 +8,25 @@ public class FeedItem {
     private String name;
     private String msgTxt;
     private String timestamp;
+    private String petname;
 
-    public FeedItem() {}
 
     public String getName() {
         return name;
     }
 
-    public FeedItem(String name, String msgTxt, String timestamp) {
+    public FeedItem() {
+        name = "";
+        petname = "";
+        timestamp = "";
+        msgTxt = "";
+    }
+
+    public FeedItem(String name, String msgTxt, String petname, String timestamp) {
         this.name = name;
         this.msgTxt = msgTxt;
         this.timestamp = timestamp;
+        this.petname = petname;
     }
 
     public void setName(String name) {
@@ -40,4 +48,14 @@ public class FeedItem {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+
+    public String getPetname() { return petname; }
+
+    public void setPetname(String petname) {
+        this.petname = petname;
+    }
+
+
+
+
 }
