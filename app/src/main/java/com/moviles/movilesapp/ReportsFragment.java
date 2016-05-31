@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.moviles.movilesapp.models.CameraView;
 import com.moviles.movilesapp.models.Constants;
 import com.moviles.movilesapp.models.FeedItem;
@@ -43,6 +44,7 @@ import java.security.SecureRandom;
  * create an instance of this fragment.
  */
 public class ReportsFragment extends BaseFragment implements View.OnClickListener {
+
     private static int RESULT_LOAD_IMG = 1;
     private static final String TAG = ReportsFragment.class.getSimpleName();
     private ImageView mSelectedImage;
@@ -169,6 +171,7 @@ private void OpenCamera(){
                         String name = user.getFirstName() + " " + user.getLastName();
                         String timeStamp = String.valueOf(System.currentTimeMillis());
                         // imagen
+                        //FirebaseStorage.getInstance().getReference().child(Constants.STORAGE_IMAGES).put
 
 
                         FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp);
@@ -178,7 +181,9 @@ private void OpenCamera(){
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {}
+                    public void onCancelled(DatabaseError error) {
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
         );
     }
