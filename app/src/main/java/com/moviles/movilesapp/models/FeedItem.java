@@ -16,17 +16,15 @@ public class FeedItem {
     }
 
     public FeedItem() {
-        name = "";
-        petName = "";
-        timestamp = "";
-        msgTxt = "";
+        this("", "", "", "", "");
     }
 
-    public FeedItem(String name, String msgTxt, String petName, String timestamp) {
+    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl) {
         this.name = name;
         this.msgTxt = msgTxt;
         this.timestamp = timestamp;
         this.petName = petName;
+        this.imageUrl = imageUrl;
     }
 
     public void setName(String name) {
