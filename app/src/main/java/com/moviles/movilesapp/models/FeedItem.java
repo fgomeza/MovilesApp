@@ -8,8 +8,8 @@ public class FeedItem {
     private String name;
     private String msgTxt;
     private String timestamp;
-    private String petname;
-
+    private String petName;
+    private String imageUrl;
 
     public String getName() {
         return name;
@@ -17,16 +17,16 @@ public class FeedItem {
 
     public FeedItem() {
         name = "";
-        petname = "";
+        petName = "";
         timestamp = "";
         msgTxt = "";
     }
 
-    public FeedItem(String name, String msgTxt, String petname, String timestamp) {
+    public FeedItem(String name, String msgTxt, String petName, String timestamp) {
         this.name = name;
         this.msgTxt = msgTxt;
         this.timestamp = timestamp;
-        this.petname = petname;
+        this.petName = petName;
     }
 
     public void setName(String name) {
@@ -49,13 +49,17 @@ public class FeedItem {
         this.timestamp = timestamp;
     }
 
-    public String getPetname() { return petname; }
+    public String getPetName() { return petName; }
 
-    public void setPetname(String petname) {
-        this.petname = petname;
+    public void setPetName(String petName) {
+        this.petName = petName;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
-
-
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

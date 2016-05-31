@@ -111,7 +111,6 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -122,28 +121,21 @@ public class HomeActivity extends AppCompatActivity
             return true;
         }
 
-        Class<? extends Fragment> fragmentClass;
+        Fragment fragment;
 
         switch (id) {
             case R.id.drawer_map:
-                fragmentClass = MapsFragment.class;
+                fragment = new MapsFragment();
                 break;
             case R.id.drawer_report:
-                fragmentClass = ReportsFragment.class;
+                fragment = new ReportsFragment();
                 break;
             case R.id.drawer_feed:
             default:
-                fragmentClass = FeedFragment.class;
+                fragment = new FeedFragment();
         }
 
         drawer.closeDrawer(GravityCompat.START);
-
-        Fragment fragment = null;
-        try {
-            fragment = fragmentClass.newInstance();
-        } catch (Exception e) {
-            Log.wtf(TAG, e.getMessage(), e);
-        }
 
         getSupportFragmentManager()
                 .beginTransaction()

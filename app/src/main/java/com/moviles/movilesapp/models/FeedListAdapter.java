@@ -1,18 +1,30 @@
 package com.moviles.movilesapp.models;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StreamDownloadTask;
 import com.moviles.movilesapp.R;
+
+import java.io.InputStream;
 
 /**
  * Created by Francisco on 23-May-16.
  */
 public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
 
+    final long ONE_MEGABYTE = 1024 * 1024;
 
     /**
      * @param activity    The activity containing the ListView
@@ -51,15 +63,37 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
         TextView msgTxt = (TextView) v.findViewById(R.id.msgTxt);
         TextView timestamp = (TextView) v.findViewById(R.id.timestamp);
         TextView petName = (TextView) v.findViewById(R.id.petName);
+        ImageView image = (ImageView) v.findViewById(R.id.feedImage);
 
         name.setText(model.getName());
         msgTxt.setText(model.getMsgTxt());
-        petName.setText(model.getPetname());
+        petName.setText(model.getPetName());
 
         CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
                 Long.parseLong(model.getTimestamp()),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS
         );
         timestamp.setText(timeAgo);
+        setImage(image, model.getImageUrl());
+    }
+
+    private void setImage(final ImageView imageView, String imageUrl) {
+        StorageReference ref = FirebaseStorage
+                .getInstance().getReference()
+                .child(Constants.STORAGE_IMAGES)
+                .child(imageUrl);
+
+        ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmap);
+
+                ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                params.width = imageView.getWidth();
+                params.height = imageView.getWidth() * bitmap.getHeight() / bitmap.getWidth();
+                imageView.setLayoutParams(params);
+            }
+        });
     }
 }

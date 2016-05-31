@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.moviles.movilesapp.ReportsFragment" >
+
     <FrameLayout
         android:id="@+id/camera_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-    </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +26,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_below="@id/textView2"
 
@@ -87,36 +87,36 @@
 
 
 
-            <Button
-                android:id="@+id/postReportBtn"
-                android:layout_width="90dp"
-                android:layout_height="70dp"
-                android:shadowRadius="10"
-                android:text="@string/action_post"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/postReportBtn"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
+            android:shadowRadius="10"
+            android:text="@string/action_post"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-            <Button
-                android:id="@+id/randomReportBtn"
-                android:layout_width="90dp"
-                android:layout_height="70dp"
-                android:shadowRadius="10"
+        <Button
+            android:id="@+id/randomReportBtn"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
+            android:shadowRadius="10"
 
-                android:text="@string/action_random_post"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/postReportBtn"
-                android:layout_toEndOf="@+id/postReportBtn" />
-            <Button
-                android:id="@+id/CamaraBtn"
-                android:shadowRadius="10"
-                android:layout_width="90dp"
-                android:layout_height="70dp"
+            android:text="@string/action_random_post"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/postReportBtn"
+            android:layout_toEndOf="@+id/postReportBtn" />
+        <Button
+            android:id="@+id/CamaraBtn"
+            android:shadowRadius="10"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
 
-                android:text="Camara"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/randomReportBtn"
-                android:layout_toEndOf="@+id/randomReportBtn" />
+            android:text="Camara"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/randomReportBtn"
+            android:layout_toEndOf="@+id/randomReportBtn" />
 
 
     </RelativeLayout>
