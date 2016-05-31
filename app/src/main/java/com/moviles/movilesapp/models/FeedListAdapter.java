@@ -59,22 +59,26 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
 
     @Override
     protected void populateView(View v, FeedItem model) {
-        TextView name = (TextView) v.findViewById(R.id.name);
-        TextView msgTxt = (TextView) v.findViewById(R.id.msgTxt);
+        TextView nameField = (TextView) v.findViewById(R.id.name);
+        TextView msgTxtField = (TextView) v.findViewById(R.id.msgTxt);
         TextView timestamp = (TextView) v.findViewById(R.id.timestamp);
-        TextView petName = (TextView) v.findViewById(R.id.petName);
+        TextView petNameField = (TextView) v.findViewById(R.id.petName);
         ImageView image = (ImageView) v.findViewById(R.id.feedImage);
-
-        name.setText(model.getName());
-        msgTxt.setText(model.getMsgTxt());
-        petName.setText(model.getPetName());
 
         CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
                 Long.parseLong(model.getTimestamp()),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS
         );
+
+        nameField.setText(model.getName());
+        msgTxtField.setText(model.getMsgTxt());
+        petNameField.setText(" - " + model.getPetName());
         timestamp.setText(timeAgo);
-        setImage(image, model.getImageUrl());
+
+        String imageUrl = model.getImageUrl();
+        if (imageUrl != null && !imageUrl.equals("")) {
+            setImage(image, imageUrl);
+        }
     }
 
     private void setImage(final ImageView imageView, String imageUrl) {

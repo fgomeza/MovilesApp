@@ -3,9 +3,8 @@ package com.moviles.movilesapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,8 +32,11 @@ import com.moviles.movilesapp.models.Constants;
 import com.moviles.movilesapp.models.FeedItem;
 import com.moviles.movilesapp.models.User;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.UUID;
 
 
 /**
@@ -47,7 +49,10 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
 
     private static int RESULT_LOAD_IMG = 1;
     private static final String TAG = ReportsFragment.class.getSimpleName();
+
     private ImageView mSelectedImage;
+    EditText msgTxtField;
+    EditText nameField;
 
 
     public ReportsFragment() {
@@ -76,9 +81,11 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  null;
-        view = inflater.inflate(R.layout.fragment_reports, container, false);
+        View view = inflater.inflate(R.layout.fragment_reports, container, false);
+
         mSelectedImage = (ImageView)view.findViewById(R.id.imageView3);
+        msgTxtField = (EditText) view.findViewById(R.id.msgTxtField);
+        nameField = (EditText) view.findViewById(R.id.nameField);
 
         return view;
     }
@@ -89,21 +96,31 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         bindButton();
     }
 
+    /*
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.postReportBtn:
-                EditText msgTxtField = (EditText) getActivity().findViewById(R.id.msgTxtField);
-                String msgTxt = msgTxtField.getText().toString();
-                EditText nameField = (EditText) getActivity().findViewById(R.id.nameField);
-                String name = nameField.getText().toString();
-                sendReport(msgTxt, name);
+                sendReport();
                 break;
             case R.id.randomReportBtn:
                 sendRandomReport();
                 break;
             case R.id.CamaraBtn:
-            OpenCamera();
+                OpenCamera();
+                break;
+            case R.id.btnUpload:
+                uploadPicture();
+                break;
+        }
+    }
+    */
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.postReportBtn:
+                sendReport();
                 break;
             case R.id.btnUpload:
                 uploadPicture();
@@ -119,47 +136,71 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         startActivityForResult(i, RESULT_LOAD_IMG);
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMG  && resultCode == Activity.RESULT_OK) {
-            HomeActivity activity = (HomeActivity)getActivity();
-            Bitmap bitmap = getBitmapFromCameraData(data, activity);
+            HomeActivity activity = (HomeActivity) getActivity();
+            Bitmap bitmap = null;
+            try {
+                bitmap = getBitmapFromIntentData(data, activity);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
             mSelectedImage.setImageBitmap(bitmap);
         }
     }
 
-    public static Bitmap getBitmapFromCameraData(Intent data, Context context){
-        Uri selectedImage = data.getData();
+    public static Bitmap getBitmapFromIntentData(Intent data, Context context) throws IOException {
+        /*
+        Uri imageUri = data.getData();
         String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        Cursor cursor = context.getContentResolver().query(imageUri,filePathColumn, null, null, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
         return BitmapFactory.decodeFile(picturePath);
+        */
+        Uri imageUri = data.getData();
+        return MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
     }
-    
+
     private void bindButton() {
         final Activity activity = getActivity();
         activity.findViewById(R.id.postReportBtn).setOnClickListener(this);
+        activity.findViewById(R.id.btnUpload).setOnClickListener(this);
+        /*
         activity.findViewById(R.id.randomReportBtn).setOnClickListener(this);
         activity.findViewById(R.id.CamaraBtn).setOnClickListener(this);
-        activity.findViewById(R.id.btnUpload).setOnClickListener(this);
-    }
-    private Camera mCamera = null;
-    private CameraView mCameraView = null;
-private void OpenCamera(){
-    try{
-        mCamera = Camera.open();//you can use open(int) to use different camera
-    } catch (Exception e){
-        Log.d("ERROR", "Failed to get camera: " + e.getMessage());
+        */
     }
 
-    if(mCamera != null) {
-        mCameraView = new CameraView(this, mCamera);//create a SurfaceView to show camera data
-        FrameLayout camera_view = (FrameLayout)getActivity().findViewById(R.id.camera_view);
-        camera_view.addView(mCameraView);//add the SurfaceView to the layout
+    private Camera mCamera = null;
+    private CameraView mCameraView = null;
+
+    private void OpenCamera(){
+        try{
+            mCamera = Camera.open();//you can use open(int) to use different camera
+        } catch (Exception e){
+            Log.d("ERROR", "Failed to get camera: " + e.getMessage());
+        }
+
+        if(mCamera != null) {
+            mCameraView = new CameraView(this, mCamera);//create a SurfaceView to show camera data
+            FrameLayout camera_view = (FrameLayout) getActivity().findViewById(R.id.camera_view);
+            camera_view.addView(mCameraView);//add the SurfaceView to the layout
+        }
     }
-}
+
+    private void sendReport() {
+        if(validateForm()) {
+            String msgTxt = msgTxtField.getText().toString();
+            String name = nameField.getText().toString();
+            sendReport(msgTxt, name);
+        }
+    }
+
     private void sendReport(final String msgTxt, final String petName) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -170,11 +211,15 @@ private void OpenCamera(){
                         User user = dataSnapshot.getValue(User.class);
                         String name = user.getFirstName() + " " + user.getLastName();
                         String timeStamp = String.valueOf(System.currentTimeMillis());
+
                         // imagen
-                        //FirebaseStorage.getInstance().getReference().child(Constants.STORAGE_IMAGES).put
+                        byte[] imageBytes = getSelectedImageBytes();
+                        String imageUrl = null;
+                        if (imageBytes != null) {
+                            imageUrl = saveImageToFirebase(imageBytes);
+                        }
 
-
-                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp);
+                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl);
                         dbRef.child(Constants.DB_FEED_NODE).push().setValue(item);
                         Toast.makeText(getActivity(), "Report created successfully", Toast.LENGTH_SHORT).show();
                         getActivity().onBackPressed();
@@ -188,9 +233,35 @@ private void OpenCamera(){
         );
     }
 
+    private byte[] getSelectedImageBytes() {
+        if(mSelectedImage.getDrawable() == null) {
+            return null;
+        }
+        mSelectedImage.setDrawingCacheEnabled(true);
+        mSelectedImage.buildDrawingCache();
+        Bitmap bitmap = mSelectedImage.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        return baos.toByteArray();
+    }
+
+    private String saveImageToFirebase(byte[] imageBytes) {
+        String imageUrl = UUID.nameUUIDFromBytes(imageBytes).toString();
+        FirebaseStorage.getInstance()
+                .getReference()
+                .child(Constants.STORAGE_IMAGES)
+                .child(imageUrl)
+                .putBytes(imageBytes);
+        return imageUrl;
+    }
+
+    private boolean validateForm() {
+        return true;
+    }
+
     private void sendRandomReport() {
         String randomMessage = new BigInteger(130, new SecureRandom()).toString(32);
-        String randomName = new BigInteger(130, new SecureRandom()).toString(15);
+        String randomName = new BigInteger(130, new SecureRandom()).toString(16);
         sendReport(randomMessage, randomName);
         Toast.makeText(getActivity(), "Random report sent", Toast.LENGTH_SHORT).show();
     }
