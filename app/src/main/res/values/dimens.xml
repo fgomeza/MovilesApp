@@ -10,7 +10,7 @@
 
     <dimen name="feed_item_border_width">1dp</dimen>
     <dimen name="feed_item_corner_radius">5dp</dimen>
-    <dimen name="feed_item_padding">4dp</dimen>
+    <dimen name="feed_item_padding">8dp</dimen>
     <dimen name="feed_item_profile_name">15dp</dimen>
     <dimen name="feed_item_status_margin_top_bottom">10dp</dimen>
     <dimen name="feed_item_content_padding">15dp</dimen>

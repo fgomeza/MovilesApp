@@ -3,6 +3,7 @@ package com.moviles.movilesapp.models;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -24,7 +26,7 @@ import java.io.InputStream;
  */
 public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
 
-    final long ONE_MEGABYTE = 1024 * 1024;
+    private final FirebaseStorage storage;
 
     /**
      * @param activity    The activity containing the ListView
@@ -34,28 +36,9 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
                 FeedItem.class,
                 R.layout.feed_item,
                 activity);
+
+        storage = FirebaseStorage.getInstance();
     }
-
-    /*
-    private View a(int position, View convertView, ViewGroup parent) {
-        if (inflater == null) {
-            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.feed_item, null);
-        }
-
-        TextView name = (TextView) convertView.findViewById(R.id.name);
-        TextView msgTxt = (TextView) convertView.findViewById(R.id.msgTxt);
-
-        FeedItem item = feedItems.get(position);
-
-        name.setText(item.getName());
-        msgTxt.setText(item.getMsgTxt());
-
-        return convertView;
-    }
-    */
 
     @Override
     protected void populateView(View v, FeedItem model) {
@@ -72,32 +55,47 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
 
         nameField.setText(model.getName());
         msgTxtField.setText(model.getMsgTxt());
-        petNameField.setText(" - " + model.getPetName());
+        if (!model.getPetName().trim().equals("")) {
+            petNameField.setText(" - " + model.getPetName());
+        }
         timestamp.setText(timeAgo);
 
         String imageUrl = model.getImageUrl();
-        if (imageUrl != null && !imageUrl.equals("")) {
+        if (imageUrl != null && !imageUrl.trim().equals("")) {
             setImage(image, imageUrl);
         }
     }
 
-    private void setImage(final ImageView imageView, String imageUrl) {
-        StorageReference ref = FirebaseStorage
-                .getInstance().getReference()
+    private void setImage(ImageView imageView, String imageUrl) {
+
+        StorageReference ref = storage
+                .getReference()
                 .child(Constants.STORAGE_IMAGES)
                 .child(imageUrl);
 
-        ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imageView.setImageBitmap(bitmap);
+        OnSuccessfulImageRetrieval listener = new OnSuccessfulImageRetrieval(imageView);
 
-                ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                params.width = imageView.getWidth();
-                params.height = imageView.getWidth() * bitmap.getHeight() / bitmap.getWidth();
-                imageView.setLayoutParams(params);
-            }
-        });
+        ref.getBytes(Constants.ONE_MEGABYTE).addOnSuccessListener(listener);
     }
+
+    class OnSuccessfulImageRetrieval implements OnSuccessListener<byte[]> {
+
+        private ImageView imageView;
+
+        public OnSuccessfulImageRetrieval(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        public void onSuccess(byte[] bytes) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            imageView.setImageBitmap(bitmap);
+
+            ViewGroup.LayoutParams params = imageView.getLayoutParams();
+            params.width = imageView.getWidth();
+            params.height = imageView.getWidth() * bitmap.getHeight() / bitmap.getWidth();
+            imageView.setLayoutParams(params);
+        }
+    }
+
 }
