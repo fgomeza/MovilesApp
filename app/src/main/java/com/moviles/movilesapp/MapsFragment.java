@@ -23,6 +23,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     private static final String TAG = MapsFragment.class.getSimpleName();
 
     private GoogleMap mMap;
+    LatLng latlng;
+
+
 
     public MapsFragment() {
         // Required empty public constructor
@@ -50,6 +53,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
+
+
         return inflater.inflate(R.layout.activity_map, container, false);
     }
 
@@ -110,6 +117,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
 
     }
+
+
+
+
+
+
 
 
 }

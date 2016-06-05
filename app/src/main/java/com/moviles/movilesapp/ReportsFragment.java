@@ -4,20 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.moviles.movilesapp.models.CameraView;
 import com.moviles.movilesapp.models.Constants;
 import com.moviles.movilesapp.models.FeedItem;
 import com.moviles.movilesapp.models.User;
@@ -53,6 +50,7 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
     private ImageView mSelectedImage;
     EditText msgTxtField;
     EditText nameField;
+    TextView locationField;
 
 
     public ReportsFragment() {
@@ -86,6 +84,8 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         mSelectedImage = (ImageView)view.findViewById(R.id.imageView3);
         msgTxtField = (EditText) view.findViewById(R.id.msgTxtField);
         nameField = (EditText) view.findViewById(R.id.nameField);
+        locationField = (TextView) view.findViewById(R.id.location);
+
 
         return view;
     }
@@ -96,25 +96,6 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         bindButton();
     }
 
-    /*
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.postReportBtn:
-                sendReport();
-                break;
-            case R.id.randomReportBtn:
-                sendRandomReport();
-                break;
-            case R.id.CamaraBtn:
-                OpenCamera();
-                break;
-            case R.id.btnUpload:
-                uploadPicture();
-                break;
-        }
-    }
-    */
 
     @Override
     public void onClick(View v) {
@@ -124,6 +105,10 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.btnUpload:
                 uploadPicture();
+                break;
+            case R.id.btnMap:
+                Intent i = new Intent(getActivity(), MapLocation.class);
+                startActivityForResult(i,2);
                 break;
         }
     }
@@ -135,6 +120,8 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
 
         startActivityForResult(i, RESULT_LOAD_IMG);
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -149,6 +136,15 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
             }
             mSelectedImage.setImageBitmap(bitmap);
         }
+
+        if (requestCode == 2) {
+                if(resultCode == Activity.RESULT_OK){
+                    String location = data.getStringExtra("location");
+                    locationField.setText(location);
+                }
+
+        }
+        hideBtn();
     }
 
     public static Bitmap getBitmapFromIntentData(Intent data, Context context) throws IOException {
@@ -170,38 +166,35 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         final Activity activity = getActivity();
         activity.findViewById(R.id.postReportBtn).setOnClickListener(this);
         activity.findViewById(R.id.btnUpload).setOnClickListener(this);
+        activity.findViewById(R.id.btnMap).setOnClickListener(this);
+
+
+
         /*
         activity.findViewById(R.id.randomReportBtn).setOnClickListener(this);
         activity.findViewById(R.id.CamaraBtn).setOnClickListener(this);
         */
     }
 
-    private Camera mCamera = null;
-    private CameraView mCameraView = null;
-
-    private void OpenCamera(){
-        try{
-            mCamera = Camera.open();//you can use open(int) to use different camera
-        } catch (Exception e){
-            Log.d("ERROR", "Failed to get camera: " + e.getMessage());
-        }
-
-        if(mCamera != null) {
-            mCameraView = new CameraView(this, mCamera);//create a SurfaceView to show camera data
-            FrameLayout camera_view = (FrameLayout) getActivity().findViewById(R.id.camera_view);
-            camera_view.addView(mCameraView);//add the SurfaceView to the layout
+    private void hideBtn(){
+        Button btn = (Button) getActivity().findViewById(R.id.btnMap);
+        TextView txt = (TextView) getActivity().findViewById(R.id.locationlabel);
+        if(locationField.getText().toString() !=  "") {
+            btn.setVisibility(View.INVISIBLE);
         }
     }
+
 
     private void sendReport() {
         if(validateForm()) {
             String msgTxt = msgTxtField.getText().toString();
             String name = nameField.getText().toString();
-            sendReport(msgTxt, name);
+            String address = locationField.getText().toString();
+            sendReport(msgTxt, name, address);
         }
     }
 
-    private void sendReport(final String msgTxt, final String petName) {
+    private void sendReport(final String msgTxt, final String petName, final String address) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child(Constants.DB_USERS_NODE).child(uid).addListenerForSingleValueEvent(
@@ -219,9 +212,9 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
                             imageUrl = saveImageToFirebase(imageBytes);
                         }
 
-                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl);
+                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, address);
                         dbRef.child(Constants.DB_FEED_NODE).push().setValue(item);
-                        Toast.makeText(getActivity(), "Report created successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Su reporte ha sido enviado", Toast.LENGTH_LONG).show();
                         getActivity().onBackPressed();
                     }
 
@@ -262,7 +255,7 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
     private void sendRandomReport() {
         String randomMessage = new BigInteger(130, new SecureRandom()).toString(32);
         String randomName = new BigInteger(130, new SecureRandom()).toString(16);
-        sendReport(randomMessage, randomName);
+        //sendReport(randomMessage, randomName);
         Toast.makeText(getActivity(), "Random report sent", Toast.LENGTH_SHORT).show();
     }
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,10 +13,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StreamDownloadTask;
 import com.moviles.movilesapp.R;
-
-import java.io.InputStream;
 
 /**
  * Created by Francisco on 23-May-16.
@@ -64,6 +60,7 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
         TextView timestamp = (TextView) v.findViewById(R.id.timestamp);
         TextView petNameField = (TextView) v.findViewById(R.id.petName);
         ImageView image = (ImageView) v.findViewById(R.id.feedImage);
+        TextView address = (TextView) v.findViewById(R.id.address);
 
         CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
                 Long.parseLong(model.getTimestamp()),
@@ -74,6 +71,7 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
         msgTxtField.setText(model.getMsgTxt());
         petNameField.setText(" - " + model.getPetName());
         timestamp.setText(timeAgo);
+        address.setText("Cerca de: " + model.getAddress());
 
         String imageUrl = model.getImageUrl();
         if (imageUrl != null && !imageUrl.equals("")) {

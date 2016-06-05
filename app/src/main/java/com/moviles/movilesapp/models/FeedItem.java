@@ -11,20 +11,25 @@ public class FeedItem {
     private String petName;
     private String imageUrl;
 
+
+
+    private String address;
+
     public String getName() {
         return name;
     }
 
     public FeedItem() {
-        this("", "", "", "", "");
+        this("", "", "", "", "", "");
     }
 
-    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl) {
+    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl, String address) {
         this.name = name;
         this.msgTxt = msgTxt;
         this.timestamp = timestamp;
         this.petName = petName;
         this.imageUrl = imageUrl;
+        this.address = address;
     }
 
     public void setName(String name) {
@@ -60,4 +65,8 @@ public class FeedItem {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public String getAddress() { return address; }
+
+    public void setAddress(String address) { this.address = address; }
 }
