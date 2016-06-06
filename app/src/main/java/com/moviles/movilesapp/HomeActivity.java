@@ -104,7 +104,7 @@ public class HomeActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), "Item clicked: " + id, Toast.LENGTH_SHORT).show();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == 0) {
             return true;
         }
 
