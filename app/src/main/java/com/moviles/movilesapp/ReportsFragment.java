@@ -212,7 +212,7 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
                             imageUrl = saveImageToFirebase(imageBytes);
                         }
 
-                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, address);
+                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, address, false);
                         dbRef.child(Constants.DB_FEED_NODE).push().setValue(item);
                         Toast.makeText(getActivity(), "Su reporte ha sido enviado", Toast.LENGTH_LONG).show();
                         getActivity().onBackPressed();

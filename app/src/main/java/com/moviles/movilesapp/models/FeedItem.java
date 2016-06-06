@@ -14,22 +14,24 @@ public class FeedItem {
 
 
     private String address;
+    private boolean found;
 
     public String getName() {
         return name;
     }
 
     public FeedItem() {
-        this("", "", "", "", "", "");
+        this("", "", "", "", "", "", false);
     }
 
-    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl, String address) {
+    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl, String address, boolean found) {
         this.name = name;
         this.msgTxt = msgTxt;
         this.timestamp = timestamp;
         this.petName = petName;
         this.imageUrl = imageUrl;
         this.address = address;
+        this.found = found;
     }
 
     public void setName(String name) {
@@ -69,4 +71,12 @@ public class FeedItem {
     public String getAddress() { return address; }
 
     public void setAddress(String address) { this.address = address; }
+
+    public boolean isFound() {
+        return found;
+    }
+
+    public void setFound(boolean found) {
+        this.found = found;
+    }
 }
