@@ -13,7 +13,6 @@
     tools:showIn="@layout/activity_map_location">
 
 
-
     <EditText
         android:layout_width="300dp"
         android:layout_height="wrap_content"
