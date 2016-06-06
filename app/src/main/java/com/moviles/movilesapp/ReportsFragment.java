@@ -222,8 +222,10 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
                         }
 
                         FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, myAddress, false);
+                        DatabaseReference newItem = dbRef.child(Constants.DB_FEED_NODE).push();
+                        item.setId(newItem.getKey());
 
-                        dbRef.child(Constants.DB_FEED_NODE).push().setValue(item);
+                        newItem.setValue(item);
                         Toast.makeText(getActivity(), "Su reporte ha sido enviado", Toast.LENGTH_LONG).show();
                         getActivity().onBackPressed();
                     }

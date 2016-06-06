@@ -12,6 +12,7 @@ public class FeedItem {
     private String imageUrl;
     private MyAddress address;
     private boolean found;
+    private String id;
 
     public MyAddress getAddress() {
         return address;
@@ -39,6 +40,14 @@ public class FeedItem {
         this.found = found;
         this.address = address;
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {

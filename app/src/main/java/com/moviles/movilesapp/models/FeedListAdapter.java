@@ -72,7 +72,9 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
         }
         timestamp.setText(timeAgo);
 
-        address.setText("Cerca de: " + model.getAddress().getAddress() );
+        if (model.getAddress() != null) {
+            address.setText("Cerca de: " + model.getAddress().getAddress() );
+        }
 
         String imageUrl = model.getImageUrl();
         if (imageUrl != null && !imageUrl.trim().equals("")) {
@@ -93,22 +95,8 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
     }
 
     private void sendFound(final FeedItem item) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.child(Constants.DB_USERS_NODE).child(uid).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dbRef.child(Constants.DB_FEED_NODE).push().setValue(item);
-                        act.onBackPressed();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        Toast.makeText(act, error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
+        dbRef.child(Constants.DB_FEED_NODE).child(item.getId()).setValue(item);
     }
 
 
