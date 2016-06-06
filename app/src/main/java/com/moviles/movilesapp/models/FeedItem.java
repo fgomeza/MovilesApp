@@ -1,7 +1,5 @@
 package com.moviles.movilesapp.models;
 
-import com.google.android.gms.maps.model.LatLng;
-
 /**
  * Created by Francisco on 23-May-16.
  */
@@ -12,33 +10,34 @@ public class FeedItem {
     private String timestamp;
     private String petName;
     private String imageUrl;
-    private String address;
-
+    private MyAddress address;
     private boolean found;
-    private LatLng latLng;
 
+    public MyAddress getAddress() {
+        return address;
+    }
+
+    public void setAddress(MyAddress address) {
+        this.address = address;
+    }
 
     public String getName() {
         return name;
     }
 
     public FeedItem() {
-
-        this("", "", "", "", "", "", null, false);
+        this("", "", "", "", "", null, false);
     }
 
-
-
-    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl, String address, LatLng latLng, boolean found) {
+    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl, MyAddress address, boolean found) {
 
         this.name = name;
         this.msgTxt = msgTxt;
         this.timestamp = timestamp;
         this.petName = petName;
         this.imageUrl = imageUrl;
-        this.address = address;
         this.found = found;
-        this.latLng = latLng;
+        this.address = address;
 
     }
 
@@ -76,10 +75,6 @@ public class FeedItem {
         this.imageUrl = imageUrl;
     }
 
-    public String getAddress() { return address; }
-
-    public void setAddress(String address) { this.address = address; }
-
     public boolean isFound() {
         return found;
     }
@@ -88,9 +83,49 @@ public class FeedItem {
         this.found = found;
     }
 
+    public static class MyAddress {
 
-    public LatLng getLatLng() { return latLng; }
+        private String address;
+        private double lat;
+        private double lng;
 
-    public void setLatLng(LatLng latLng) { this.latLng = latLng; }
+        public MyAddress(){
+
+        }
+
+        public MyAddress(String address, double lat, double lng) {
+            this.address = address;
+            this.lat = lat;
+            this.lng = lng;
+        }
+
+        public double getLat() {
+            return lat;
+        }
+
+        public void setLat(double lat) {
+            this.lat = lat;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+         public double getLng() {
+            return lng;
+        }
+
+        public void setLng(double lng) {
+            this.lng = lng;
+        }
+
+
+
+
+    }
 
 }

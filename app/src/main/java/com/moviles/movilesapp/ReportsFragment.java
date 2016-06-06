@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -53,6 +54,8 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
     EditText msgTxtField;
     EditText nameField;
     TextView locationField;
+    Address address;
+    FeedItem.MyAddress myAddress;
 
 
     public ReportsFragment() {
@@ -88,8 +91,6 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         msgTxtField = (EditText) view.findViewById(R.id.msgTxtField);
         nameField = (EditText) view.findViewById(R.id.nameField);
         locationField = (TextView) view.findViewById(R.id.location);
-
-
         return view;
     }
 
@@ -142,10 +143,18 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
 
         if (requestCode == 2) {
                 if(resultCode == Activity.RESULT_OK){
-                    Bundle bundle = getActivity().getIntent().getParcelableExtra("bundle");
-                    String location = bundle.getString("location");
-                    latLng = bundle.getParcelable("latLng");
-                    locationField.setText(location);
+                    Bundle bundle = data.getParcelableExtra("bundle");
+                    address = bundle.getParcelable("ad");
+
+                    String locality = address.getLocality();
+                    String adminArea = address.getAdminArea();
+                    String country = address.getCountryName();
+                    Double lat = address.getLatitude();
+                    Double lng = address.getLongitude();
+                    String locationData = locality + " " + adminArea + " " + country;
+                    myAddress = new FeedItem.MyAddress(locationData,lat,lng);
+
+                    locationField.setText(locationData);
                 }
 
         }
@@ -173,12 +182,6 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         activity.findViewById(R.id.btnUpload).setOnClickListener(this);
         activity.findViewById(R.id.btnMap).setOnClickListener(this);
 
-
-
-        /*
-        activity.findViewById(R.id.randomReportBtn).setOnClickListener(this);
-        activity.findViewById(R.id.CamaraBtn).setOnClickListener(this);
-        */
     }
 
     private void hideBtn(){
@@ -193,12 +196,14 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
         if(validateForm()) {
             String msgTxt = msgTxtField.getText().toString();
             String name = nameField.getText().toString();
-            String address = locationField.getText().toString();
-            sendReport(msgTxt, name, address,latLng);
+            String addressField = locationField.getText().toString();
+
+
+          sendReport(msgTxt, name, address);
         }
     }
 
-    private void sendReport(final String msgTxt, final String petName, final String address, final LatLng latLng) {
+    private void sendReport(final String msgTxt, final String petName, final Address ad) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child(Constants.DB_USERS_NODE).child(uid).addListenerForSingleValueEvent(
@@ -216,8 +221,7 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
                             imageUrl = saveImageToFirebase(imageBytes);
                         }
 
-
-                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, address, latLng, false);
+                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, myAddress, false);
 
                         dbRef.child(Constants.DB_FEED_NODE).push().setValue(item);
                         Toast.makeText(getActivity(), "Su reporte ha sido enviado", Toast.LENGTH_LONG).show();

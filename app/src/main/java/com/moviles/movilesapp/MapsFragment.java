@@ -17,6 +17,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.moviles.movilesapp.models.Constants;
+import com.moviles.movilesapp.models.FeedItem;
 
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -24,7 +31,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     LatLng latlng;
-
 
 
     public MapsFragment() {
@@ -60,7 +66,25 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        connection();
         createMap();
+    }
+
+    private void connection(){
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Constants.DB_FEED_NODE);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FeedItem value = dataSnapshot.getValue(FeedItem.class);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void createMap() {
@@ -110,14 +134,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
 
     }
 
-    private void drawMarkers(){
 
-    }
 
     private void Mensaje(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-
     }
+
 
 
 

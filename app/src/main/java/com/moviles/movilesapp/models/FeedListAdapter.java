@@ -67,7 +67,8 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
             petNameField.setText(" - " + model.getPetName());
         }
         timestamp.setText(timeAgo);
-        address.setText("Cerca de: " + model.getAddress());
+
+        address.setText("Cerca de: " + model.getAddress().getAddress() );
 
         String imageUrl = model.getImageUrl();
         if (imageUrl != null && !imageUrl.trim().equals("")) {
@@ -105,9 +106,6 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
                 }
         );
     }
-
-
-
 
 
     private void setImage(final ImageView imageView, String imageUrl) {
