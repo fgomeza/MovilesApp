@@ -74,13 +74,8 @@ public class MapLocation extends FragmentActivity implements OnFragmentInteracti
 
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-           // finallatLng = latLng;
             mMap.addMarker(new MarkerOptions().position(latLng).title(address.getLocality()));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            String locality = address.getLocality();
-            String adminArea = address.getAdminArea();
-            String country = address.getCountryName();
-
             finaladdress = address;
         }
 

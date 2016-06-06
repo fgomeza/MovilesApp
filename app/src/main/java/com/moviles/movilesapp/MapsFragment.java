@@ -17,11 +17,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.moviles.movilesapp.models.Constants;
 import com.moviles.movilesapp.models.FeedItem;
 
@@ -30,7 +30,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     private static final String TAG = MapsFragment.class.getSimpleName();
 
     private GoogleMap mMap;
-    LatLng latlng;
+    FeedItem itemValue;
 
 
     public MapsFragment() {
@@ -66,17 +66,35 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        connection();
+
         createMap();
+        connection();
     }
 
     private void connection(){
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Constants.DB_FEED_NODE);
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addChildEventListener(new ChildEventListener() {
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FeedItem value = dataSnapshot.getValue(FeedItem.class);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                itemValue = dataSnapshot.getValue(FeedItem.class);
+                LatLng latLng = new LatLng(itemValue.getAddress().getLat(), itemValue.getAddress().getLng());
+                mMap.addMarker(new MarkerOptions().position(latLng).title(itemValue.getPetName()));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
@@ -93,6 +111,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -116,10 +136,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
             @Override
             public void onMyLocationChange(Location arg0) {
                 // TODO Auto-generated method stub
-                LatLng location = new LatLng(arg0.getLatitude(), arg0.getLongitude());
 
-                mMap.addMarker(new MarkerOptions().position(location).title("Su ubicación"));
-                moveToCurrentLocation(location);
+
+
+                //moveToCurrentLocation(location);
             }
         });
     }
