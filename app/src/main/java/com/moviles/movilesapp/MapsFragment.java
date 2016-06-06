@@ -154,18 +154,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
 
     }
 
-
-
     private void Mensaje(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
-
-
-
-
-
-
-
-
 
 }
