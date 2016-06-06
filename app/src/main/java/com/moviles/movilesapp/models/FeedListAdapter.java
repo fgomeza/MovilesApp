@@ -53,8 +53,12 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
         ImageView image = (ImageView) v.findViewById(R.id.feedImage);
         TextView address = (TextView) v.findViewById(R.id.address);
         TextView seEncontro = (TextView) v.findViewById(R.id.seEncontro);
+        Button btn = (Button) v.findViewById(R.id.found);
 
         seEncontro.setText(model.isFound()?"Esta mascota ya se encontró":"Esta mascota no se ha encontrado");
+        if(model.isFound()) {
+            btn.setVisibility(View.GONE);
+        }
 
         CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
                 model.getTimestamp().equals("")?System.currentTimeMillis():Long.parseLong(model.getTimestamp()),
