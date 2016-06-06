@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,6 +47,7 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
 
     private static int RESULT_LOAD_IMG = 1;
     private static final String TAG = ReportsFragment.class.getSimpleName();
+    LatLng latLng = null;
 
     private ImageView mSelectedImage;
     EditText msgTxtField;
@@ -55,6 +57,7 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
 
     public ReportsFragment() {
         // Required empty public constructor
+
     }
 
     /**
@@ -139,7 +142,9 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
 
         if (requestCode == 2) {
                 if(resultCode == Activity.RESULT_OK){
-                    String location = data.getStringExtra("location");
+                    Bundle bundle = getActivity().getIntent().getParcelableExtra("bundle");
+                    String location = bundle.getString("location");
+                    latLng = bundle.getParcelable("latLng");
                     locationField.setText(location);
                 }
 
@@ -178,7 +183,6 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
 
     private void hideBtn(){
         Button btn = (Button) getActivity().findViewById(R.id.btnMap);
-        TextView txt = (TextView) getActivity().findViewById(R.id.locationlabel);
         if(locationField.getText().toString() !=  "") {
             btn.setVisibility(View.INVISIBLE);
         }
@@ -190,11 +194,11 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
             String msgTxt = msgTxtField.getText().toString();
             String name = nameField.getText().toString();
             String address = locationField.getText().toString();
-            sendReport(msgTxt, name, address);
+            sendReport(msgTxt, name, address,latLng);
         }
     }
 
-    private void sendReport(final String msgTxt, final String petName, final String address) {
+    private void sendReport(final String msgTxt, final String petName, final String address, final LatLng latLng) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child(Constants.DB_USERS_NODE).child(uid).addListenerForSingleValueEvent(
@@ -212,7 +216,9 @@ public class ReportsFragment extends BaseFragment implements View.OnClickListene
                             imageUrl = saveImageToFirebase(imageBytes);
                         }
 
-                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, address, false);
+
+                        FeedItem item = new FeedItem(name, msgTxt, petName, timeStamp, imageUrl, address, latLng, false);
+
                         dbRef.child(Constants.DB_FEED_NODE).push().setValue(item);
                         Toast.makeText(getActivity(), "Su reporte ha sido enviado", Toast.LENGTH_LONG).show();
                         getActivity().onBackPressed();

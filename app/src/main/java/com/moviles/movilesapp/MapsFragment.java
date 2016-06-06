@@ -54,9 +54,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
-
-
         return inflater.inflate(R.layout.activity_map, container, false);
     }
 
@@ -110,6 +107,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 3 seconds.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 3000, null);
+
+    }
+
+    private void drawMarkers(){
 
     }
 

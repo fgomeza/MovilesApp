@@ -78,6 +78,7 @@
                 android:layout_below="@id/seEncontro"
                 android:id="@+id/found"
                 android:text="@string/found"/>
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

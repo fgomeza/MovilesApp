@@ -106,10 +106,13 @@ public class FeedListAdapter extends FirebaseListAdapter<FeedItem> {
         );
     }
 
-    private void setImage(ImageView imageView, String imageUrl) {
 
-        StorageReference ref = storage
-                .getReference()
+
+
+
+    private void setImage(final ImageView imageView, String imageUrl) {
+        StorageReference ref = FirebaseStorage
+                .getInstance().getReference()
                 .child(Constants.STORAGE_IMAGES)
                 .child(imageUrl);
 

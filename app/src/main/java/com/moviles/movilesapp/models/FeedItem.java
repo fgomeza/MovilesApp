@@ -1,5 +1,7 @@
 package com.moviles.movilesapp.models;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Francisco on 23-May-16.
  */
@@ -10,21 +12,25 @@ public class FeedItem {
     private String timestamp;
     private String petName;
     private String imageUrl;
-
-
-
     private String address;
+
     private boolean found;
+    private LatLng latLng;
+
 
     public String getName() {
         return name;
     }
 
     public FeedItem() {
-        this("", "", "", "", "", "", false);
+
+        this("", "", "", "", "", "", null, false);
     }
 
-    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl, String address, boolean found) {
+
+
+    public FeedItem(String name, String msgTxt, String petName, String timestamp, String imageUrl, String address, LatLng latLng, boolean found) {
+
         this.name = name;
         this.msgTxt = msgTxt;
         this.timestamp = timestamp;
@@ -32,6 +38,8 @@ public class FeedItem {
         this.imageUrl = imageUrl;
         this.address = address;
         this.found = found;
+        this.latLng = latLng;
+
     }
 
     public void setName(String name) {
@@ -79,4 +87,10 @@ public class FeedItem {
     public void setFound(boolean found) {
         this.found = found;
     }
+
+
+    public LatLng getLatLng() { return latLng; }
+
+    public void setLatLng(LatLng latLng) { this.latLng = latLng; }
+
 }

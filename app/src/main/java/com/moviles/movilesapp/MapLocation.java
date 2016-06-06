@@ -25,6 +25,7 @@ public class MapLocation extends FragmentActivity implements OnFragmentInteracti
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     String finalLocation;
+    LatLng finallatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,12 @@ public class MapLocation extends FragmentActivity implements OnFragmentInteracti
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("location", finalLocation);
+                Bundle args = new Bundle();
+                args.putParcelable("latLng", finallatLng);
+                args.putString("location",finalLocation);
+                intent.putExtra("bundle", args);
+
+
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -69,6 +75,7 @@ public class MapLocation extends FragmentActivity implements OnFragmentInteracti
 
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            finallatLng = latLng;
             mMap.addMarker(new MarkerOptions().position(latLng).title(address.getLocality()));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             String locality = address.getLocality();
@@ -76,11 +83,12 @@ public class MapLocation extends FragmentActivity implements OnFragmentInteracti
             String country = address.getCountryName();
 
             finalLocation = address.getAddressLine(0);
+            finalLocation += " " + locality;
             if(adminArea != null) {
                 finalLocation += " " + adminArea;
             }
-            finalLocation += " " + country;
 
+            finalLocation += " " + country;
 
         }
 
